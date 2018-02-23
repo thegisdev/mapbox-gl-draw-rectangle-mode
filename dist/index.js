@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 var DrawRectangle = {
   // When the mode starts this function will be called.
   onSetup: function onSetup(opts) {
-    var rectangle = undefined.newFeature({
+    var rectangle = this.newFeature({
       type: "Feature",
       properties: {},
       geometry: {
@@ -14,10 +14,10 @@ var DrawRectangle = {
         coordinates: [[[], [], [], [], []]]
       }
     });
-    undefined.addFeature(rectangle);
-    undefined.clearSelectedFeatures();
-    undefined.updateUIClasses({ mouse: "add" });
-    undefined.setActionableState({
+    this.addFeature(rectangle);
+    this.clearSelectedFeatures();
+    this.updateUIClasses({ mouse: "add" });
+    this.setActionableState({
       trash: true
     });
     return {
@@ -29,8 +29,8 @@ var DrawRectangle = {
     // if state.startPoint exist, means its second click
     //change to  simple_select mode
     if (state.startPoint && state.startPoint[0] !== e.lngLat.lng && state.startPoint[1] !== e.lngLat.lat) {
-      undefined.updateUIClasses({ mouse: "pointer" });
-      undefined.changeMode("simple_select");
+      this.updateUIClasses({ mouse: "pointer" });
+      this.changeMode("simple_select");
       delete state["startPoint"];
     }
     // on first click, save clicked point coords as starting for  rectangle
@@ -51,32 +51,32 @@ var DrawRectangle = {
   },
   // Whenever a user clicks on a key while focused on the map, it will be sent here
   onKeyUp: function onKeyUp(state, e) {
-    if (e.keyCode === 27) return undefined.changeMode("simple_select");
+    if (e.keyCode === 27) return this.changeMode("simple_select");
   },
   onStop: function onStop(state) {
-    undefined.updateUIClasses({ mouse: "none" });
-    undefined.activateUIButton();
+    this.updateUIClasses({ mouse: "none" });
+    this.activateUIButton();
 
     // check to see if we've deleted this feature
-    if (undefined.getFeature(state.rectangle.id) === undefined) return;
+    if (this.getFeature(state.rectangle.id) === undefined) return;
 
     //remove last added coordinate
     state.rectangle.removeCoordinate("0.4");
     if (state.rectangle.isValid()) {
-      undefined.map.fire("draw.create", {
+      this.map.fire("draw.create", {
         features: [state.rectangle.toGeoJSON()]
       });
     } else {
-      undefined.deleteFeature([state.rectangle.id], { silent: true });
-      undefined.changeMode("simple_select", {}, { silent: true });
+      this.deleteFeature([state.rectangle.id], { silent: true });
+      this.changeMode("simple_select", {}, { silent: true });
     }
   },
   toDisplayFeatures: function toDisplayFeatures(state, geojson, display) {
     display(geojson);
   },
   onTrash: function onTrash(state) {
-    undefined.deleteFeature([state.rectangle.id], { silent: true });
-    undefined.changeMode("simple_select");
+    this.deleteFeature([state.rectangle.id], { silent: true });
+    this.changeMode("simple_select");
   }
 };
 
