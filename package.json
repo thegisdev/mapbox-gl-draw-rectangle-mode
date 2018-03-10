@@ -1,6 +1,6 @@
 {
   "name": "mapbox-gl-draw-rectangle-mode",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A custom mode for MapboxGL Draw to draw rectangles",
   "main": "dist/index.js",
   "author": "Erick Otenyo",

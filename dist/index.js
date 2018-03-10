@@ -3,6 +3,25 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var doubleClickZoom = {
+  enable: function enable(ctx) {
+    setTimeout(function () {
+      // First check we've got a map and some context.
+      if (!ctx.map || !ctx.map.doubleClickZoom || !ctx._ctx || !ctx._ctx.store || !ctx._ctx.store.getInitialConfigValue) return;
+      // Now check initial state wasn't false (we leave it disabled if so)
+      if (!ctx._ctx.store.getInitialConfigValue("doubleClickZoom")) return;
+      ctx.map.doubleClickZoom.enable();
+    }, 0);
+  },
+  disable: function disable(ctx) {
+    setTimeout(function () {
+      if (!ctx.map || !ctx.map.doubleClickZoom) return;
+      // Always disable here, as it's necessary in some cases.
+      ctx.map.doubleClickZoom.disable();
+    }, 0);
+  }
+};
+
 var DrawRectangle = {
   // When the mode starts this function will be called.
   onSetup: function onSetup(opts) {
@@ -11,11 +30,12 @@ var DrawRectangle = {
       properties: {},
       geometry: {
         type: "Polygon",
-        coordinates: [[[], [], [], [], []]]
+        coordinates: [[]]
       }
     });
     this.addFeature(rectangle);
     this.clearSelectedFeatures();
+    doubleClickZoom.disable(this);
     this.updateUIClasses({ mouse: "add" });
     this.setActionableState({
       trash: true
@@ -30,15 +50,15 @@ var DrawRectangle = {
     //change to  simple_select mode
     if (state.startPoint && state.startPoint[0] !== e.lngLat.lng && state.startPoint[1] !== e.lngLat.lat) {
       this.updateUIClasses({ mouse: "pointer" });
-      this.changeMode("simple_select");
-      delete state["startPoint"];
+      state.endPoint = [e.lngLat.lng, e.lngLat.lat];
+      this.changeMode("simple_select", { featuresId: state.rectangle.id });
     }
     // on first click, save clicked point coords as starting for  rectangle
     var startPoint = [e.lngLat.lng, e.lngLat.lat];
     state.startPoint = startPoint;
   },
   onMouseMove: function onMouseMove(state, e) {
-    // if startPoint, update the feature coords, using the bounding box concept
+    // if startPoint, update the feature coordinates, using the bounding box concept
     // we are simply using the startingPoint coordinates and the current Mouse Position
     // coordinates to calculate the bounding box on the fly, which will be our rectangle
     if (state.startPoint) {
@@ -54,6 +74,7 @@ var DrawRectangle = {
     if (e.keyCode === 27) return this.changeMode("simple_select");
   },
   onStop: function onStop(state) {
+    doubleClickZoom.enable(this);
     this.updateUIClasses({ mouse: "none" });
     this.activateUIButton();
 
@@ -72,7 +93,13 @@ var DrawRectangle = {
     }
   },
   toDisplayFeatures: function toDisplayFeatures(state, geojson, display) {
-    display(geojson);
+    var isActivePolygon = geojson.properties.id === state.rectangle.id;
+    geojson.properties.active = isActivePolygon ? "true" : "false";
+    if (!isActivePolygon) return display(geojson);
+
+    // Only render the rectangular polygon if it has the starting point
+    if (!state.startPoint) return;
+    return display(geojson);
   },
   onTrash: function onTrash(state) {
     this.deleteFeature([state.rectangle.id], { silent: true });
