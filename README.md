@@ -6,6 +6,10 @@ This is a custom mode for Mapbox GL Draw  that adds the functionality to draw re
 
 `yarn add mapbox-gl-draw-rectangle-mode`
 
+### Demo 
+
+https://bl.ocks.org/andrewharvey/31b8180e3f5f1e12849a352796e0daf4
+
 ### Usage
 
 ```js
