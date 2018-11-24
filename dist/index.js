@@ -44,6 +44,13 @@ var DrawRectangle = {
       rectangle: rectangle
     };
   },
+  // support mobile taps
+  onTap: function onTap(state, e) {
+    // emulate 'move mouse' to update feature coords
+    if (state.startPoint) this.onMouseMove(state, e);
+    // emulate onClick
+    this.onClick(state, e);
+  },
   // Whenever a user clicks on the map, Draw will call `onClick`
   onClick: function onClick(state, e) {
     // if state.startPoint exist, means its second click
