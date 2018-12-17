@@ -25,7 +25,7 @@ const draw = new MapboxDraw({
 draw.changeMode('draw_rectangle');
 ```
 
-Once a rectangle is created, 1 events is fired:
+Once a rectangle is created, 1 event is fired:
 - `draw.create` with the created rectangle
 
 ### Build
