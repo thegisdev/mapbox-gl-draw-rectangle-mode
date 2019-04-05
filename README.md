@@ -8,7 +8,7 @@ This is a custom mode for Mapbox GL Draw  that adds the functionality to draw re
 
 ### Demo 
 
-https://bl.ocks.org/andrewharvey/31b8180e3f5f1e12849a352796e0daf4
+https://bl.ocks.org/erick-otenyo/e22cefb2c69fb4d4db4c19d7778ed574
 
 ### Usage
 
