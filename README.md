@@ -1,14 +1,9 @@
 ## Mapbox GL Draw Rectangle Mode
 
-This is a custom mode for Mapbox GL Draw  that adds the functionality to draw rectangles
+A custom mode for MapboxGL Draw to draw rectangles that adds the functionality of keeping the rectangle's shape when adjusting a corner of the drawn rectangles.
 
-### Install
-
-`yarn add mapbox-gl-draw-rectangle-mode`
-
-### Demo 
-
-https://bl.ocks.org/erick-otenyo/e22cefb2c69fb4d4db4c19d7778ed574
+Original inspiration comes from this package, which hasn't been mantained for the last 4 years:
+https://github.com/thegisdev/mapbox-gl-draw-rectangle-mode
 
 ### Usage
 
@@ -33,5 +28,4 @@ Once a rectangle is created, 1 event is fired:
 `yarn build` will do it.
 
 ### License
-
 MIT
