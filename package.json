@@ -1,6 +1,6 @@
 {
   "name": "@ookla/mapbox-gl-draw-rectangle",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "A custom mode for MapboxGL Draw to draw rectangles that adds the functionality of keeping the rectangle's shape when adjusting a corner of the drawn rectangle",
   "main": "build/index.js",
   "module": "build/index.es.js",
