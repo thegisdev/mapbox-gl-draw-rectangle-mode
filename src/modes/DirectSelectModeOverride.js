@@ -1,7 +1,6 @@
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
-import * as Constants from "@mapbox/mapbox-gl-draw/src/constants";
-import createSupplementaryPoints from "@mapbox/mapbox-gl-draw/src/lib/create_supplementary_points";
-import constrainFeatureMovement from "@mapbox/mapbox-gl-draw/src/lib/constrain_feature_movement";
+import { lib } from '@mapbox/mapbox-gl-draw';
+const { createSupplementaryPoints, constrainFeatureMovement } = lib;
 
 const DirectSelectModeOverride = MapboxDraw.modes.direct_select;
 
@@ -60,10 +59,10 @@ DirectSelectModeOverride.dragVertex = function (state, e, delta) {
   }
 
   const selectedCoordPoints = selectedCoords.map((coords) => ({
-    type: Constants.geojsonTypes.FEATURE,
+    type: MapboxDraw.constants.geojsonTypes.FEATURE,
     properties: {},
     geometry: {
-      type: Constants.geojsonTypes.POINT,
+      type: MapboxDraw.constants.geojsonTypes.POINT,
       coordinates: coords,
     },
   }));
@@ -81,7 +80,7 @@ DirectSelectModeOverride.dragVertex = function (state, e, delta) {
 
 DirectSelectModeOverride.toDisplayFeatures = function (state, geojson, push) {
   if (state.featureId === geojson.properties.id) {
-    geojson.properties.active = Constants.activeStates.ACTIVE;
+    geojson.properties.active = MapboxDraw.constants.activeStates.ACTIVE;
     const isRectangle = geojson?.properties?.user_isRectangle;
     push(geojson);
     createSupplementaryPoints(geojson, {
@@ -90,7 +89,7 @@ DirectSelectModeOverride.toDisplayFeatures = function (state, geojson, push) {
       selectedPaths: state.selectedCoordPaths,
     }).forEach(push);
   } else {
-    geojson.properties.active = Constants.activeStates.INACTIVE;
+    geojson.properties.active = MapboxDraw.constants.activeStates.INACTIVE;
     push(geojson);
   }
   this.fireActionable(state);
